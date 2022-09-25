@@ -18,12 +18,32 @@ def TakeAPic(lattice):
 
 def main():
     lattice = Metro.Lattice(2,100)
-    a=[]
-    for i in range(10000):
-        lattice.step()
-    if i%1000 ==0:
-        a +=TakeAPic(lattice)
-
+    TakeAPic(lattice, "fig")
+    for i in range(1000000):
+        lattice.step(10,10,1000)
+        if i%10000 ==0:
+            TakeAPic(lattice,"fig")
+    TakeAPic(lattice, "fig")
+    
+    
+    a=100
+    b=100000
+    y = []
+    for i in range(a):
+        lattice = Metro.Lattice(2,100)
+        for j in range (b):
+            lattice.step()
+        y +=[math.sqrt(lattice.M**2)]
+    y = np.array(y)
+    x = np.array(range(a))
+    
+    fig, ax1 = plt.subplots()
+    ax1.plot(x,y,label = "m(T) x T")
+    ax1.set_title("Magnetization versus temperature ")
+    ax1.set_xlabel("Temperature(T)" )
+    ax1.set_ylabel("Magnetization(m)")
+    ax1.legend()
+           
 
     return 
 
