@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import numpy as np
 import  matplotlib.pyplot as plt
 import math
@@ -15,14 +13,12 @@ class Lattice:
         self.D = D
         self.size = size
         self.array = np.random.randint(0,2,size**self.D)
-        self.M = 0
-        for item in self.array:
-            if item == 1:
-                self.M += 1
-        self.M = self.M/self.size
+             
+                            
+                    
             
 
-    def step(self, B=0, T=1, J = 0):
+    def step(self, B=0, T=1, J = 1):
         coord = np.random.randint(0,self.size,self.D)
         delta_h = self.deltaH(coord, 1, J, B)
         if delta_h==None:
@@ -38,6 +34,21 @@ class Lattice:
                 return delta_h
             else:        
                 return 0
+    
+        
+    def M2(self):
+        M =0
+        sitesize = int(self.size**(1/2))
+        for i in range(0,self.size,sitesize):
+            for j in range(0,self.size,sitesize):
+                m = 0
+                for a in range(i,i+sitesize):
+                    for b in range(j, j + sitesize):
+                        pointer = self.calculator(np.array([a,b]))
+                        m += self.array[pointer]
+                M += (1/sitesize**2)*abs(m)
+        return M
+                        
         
     def calculator(self,coord):
         pointer = 0
@@ -62,8 +73,6 @@ class Lattice:
     def change(self,coord):
         pointer = self.calculator(coord)
         self.array[pointer] = (self.array[pointer] + 1)%2
-        if self.array[pointer] == 1:
-            self.M += 1/self.size
         return 
             
     
@@ -86,9 +95,11 @@ class Lattice:
             for j in coord_list:
                 a1 = j[:]
                 a2 = j[:]
+                a3 = j[:]
                 a1 += [(i-1)%self.size]
                 a2 += [(i +1)%self.size]
-                aux += a1,a2
+                a3 += [i]
+                aux += a1,a2, a3
             coord_list += aux
         
         aux = []
@@ -105,8 +116,8 @@ class Lattice:
                 spin1 = 1
             else:
                 spin1 = -1
-                    
-            delta_h =+ J*spin0*spin1 + B*spin1
+            parcial = (-1/2)*J*spin0*spin1 - B*spin1       
+            delta_h += parcial
         
         if delta_h==None:
             print()
@@ -143,12 +154,8 @@ def Simulation(n = 1000, J = 1, B = 0, T = 1, D = 1, size = 200, mode = 0):
                 
 if __name__ == '__main__':
                    
-     Simulation()                
-                    
-                    
-            
-           
-           
+     Simulation() 
+    
             
                 
                 
