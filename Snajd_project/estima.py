@@ -8,7 +8,7 @@ Created on Sun Aug 20 23:33:01 2023
 import math as mt
 import random as rd
 
-print("Este programa é um teste!")
+print("Este programa é um teste!,muito bom. Posso mudar a vontade o programa")
 
 n = int(input("Diga um número"))
 counter = 0
